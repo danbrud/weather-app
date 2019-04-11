@@ -13,7 +13,7 @@
 
 <body>
 
-    <input type="text" placeholder="Let us know where you are...">
+    <input id="city-input" type="text" placeholder="Let us know where you are...">
     <div id="search-button">Search</div>
 
     <div id="cities-container">
@@ -26,7 +26,7 @@
                 <div class="city-name">{{name}}</div>
                 <div class="temp">{{temperature}}</div>
                 <div class="cond">{{condition}}</div>
-                <div class="cond-pic">{{conditionPic}}</div>
+                <img class="cond-pic" src="{{conditionPic}}">
                 <div class="last-update">{{updatedAt}}</div>
             </div>
         {{/each}}

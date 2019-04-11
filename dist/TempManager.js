@@ -1,19 +1,23 @@
 
 class TempManager {
     constructor(){
-        this.cityData = []
+        this._cityData = []
+    }
+
+    get cityData() {
+        return this._cityData
     }
 
     async getDataFromDB() {
         let cities = await $.get('./cities')
         if(cities) {
-            this.cityData = cities
+            this._cityData = cities
         }
     }
 
     async getCityData(cityName) {
         let city = await $.get(`./city/${cityName}`)
-        this.cityData.push(city)
+        this._cityData.push(city)
     }
 
     saveCity(cityName) {

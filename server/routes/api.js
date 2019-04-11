@@ -19,14 +19,14 @@ router.get('/city/:cityName', function(req, res) {
     request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, function(err, response) {
         let weatherObj = JSON.parse(response.body)
 
-        let weatherIcon = weatherObj.current.condition.icon.slice(2)
+        //let weatherIcon = //.slice(2)
 
         let cityObj = {
             name: weatherObj.location.name,
             updatedAt: weatherObj.current.last_updated,
             temperature: weatherObj.current.temp_c,
             condition: weatherObj.current.condition.text,
-            conditionPic: weatherIcon
+            conditionPic: weatherObj.current.condition.icon
         }
 
         res.send(cityObj)
