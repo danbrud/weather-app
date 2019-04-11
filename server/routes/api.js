@@ -61,6 +61,10 @@ router.post('/city', function(req, res) {
 
 router.delete('/city/:cityName', function(req, res) {
     //FIND CITY DATA IN DB AND REMOVE IT FROM DB
+    let cityName = req.params.cityName
+    City.deleteOne({ name: cityName }, function(err, response) {
+        res.send(`Deleted ${cityName} from database`)
+    })
 })
 
 
