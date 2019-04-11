@@ -11,7 +11,20 @@ class TempManager {
         }
     }
 
-    getCityData() {
-        
+    async getCityData(cityName) {
+        let city = await $.get(`./city/${cityName}`)
+        this.cityData.push(city)
     }
+
+    saveCity(cityName) {
+        for(let city of this.cityData) {
+            if(cityName === city.name) {
+                $.post(`./city`, city, function(response) { })
+            }
+        }
+    }
+
+    
 }
+
+let test = new TempManager()
