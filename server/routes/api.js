@@ -27,7 +27,7 @@ router.get('/cities', function(req, res) {
 })
 
 router.post('/city', function(req, res) {
-    //TAKE DATA FROM BODY OF REQUEST AND SAVE AS A NEW CITY TO DATABASE
+    //TAKE DATA FROM BODY OF THE REQUEST AND SAVE AS A NEW CITY TO DATABASE
     let reqCity = req.body
 
     let newCity = new City({
