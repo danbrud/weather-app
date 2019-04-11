@@ -13,7 +13,26 @@
 
 <body>
 
+    <input type="text" placeholder="Let us know where you are...">
+    <div id="search-button">Search</div>
 
+    <div id="cities-container">
+
+    </div>
+
+    <script id="city-template" type="text/x-handlebars-template">
+        {{#each allCityData}}
+            <div class="city">
+                <div class="city-name">{{name}}</div>
+                <div class="temp">{{temperature}}</div>
+                <div class="cond">{{condition}}</div>
+                <div class="cond-pic">{{conditionPic}}</div>
+                <div class="last-update">{{updatedAt}}</div>
+            </div>
+        {{/each}}
+        
+        
+    </script>
 
     <script src="./jquery/dist/jquery.js"></script>
     <script src="./handlebars/dist/handlebars.js"></script>
