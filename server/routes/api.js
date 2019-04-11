@@ -17,13 +17,28 @@ router.get('/city/:cityName', function(req, res) {
 
     let cityName = req.params.cityName
     request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, function(err, response) {
-        let currentWeatherObj = JSON.parse(response.body)
-        res.send(currentWeatherObj)
+        let weatherObj = JSON.parse(response.body)
+
+        let cityObj = {
+            name: weatherObj.location.name,
+            updatedAt: weatherObj.current.last_updated,
+            temperature: weatherObj.current.temp_c,
+            condition: weatherObj.current.condition.text,
+            conditionPic: weatherObj.current.condition.icon
+        }
+        //remove double slash from beginning of PNG image
+
+        console.log(cityObj.conditionPic)
+
+        res.send(cityObj)
     })
 })
 
 router.get('/cities', function(req, res) {
-    //ROUTE THAT SAVES ALL CITY DATA SAVED IN DB AND SENDS IT TO CLIENT
+    //ROUTE THAT FINDS ALL CITY DATA SAVED IN DB AND SENDS IT TO CLIENT
+    City.find({}, function(err, cities) {
+        res.send(cities)
+    })
 })
 
 router.post('/city', function(req, res) {
