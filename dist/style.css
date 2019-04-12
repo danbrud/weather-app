@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    background-color: #34495E;
+}
+
+#search-container {
+    text-align: center;
+    margin: 2%;
+}
+
+#city-input {
+    width: 100%;
+    text-align: center;
+    border: 0;
+    color: #95a5a6;
+    border-radius: 2px;
+}
+
+#search-button {
+    display: inline-block;
+    background-color: #63CCCA;
+    width: 100%;
+    text-align: center;
+    margin-top: 1%;
+    color: #2c3e50;
+    border-radius: 5px;
+}
+
+.city {
+    margin:5px;
+    display: grid;
+    grid-template-areas: 
+        ". temp img"
+        "btn name cond"
+        "lu lu lu";
+    background-color: #026C7C;
+}
+
+.city-content {
+    display: grid;
+    justify-self: center;
+    align-self: center;
+}
+
+.add-button {
+    grid-area: btn;
+    font-size: 20px;
+}
+
+.remove-button {
+    grid-area: btn;
+    font-size: 20px;
+}
+
+.city-name {
+    grid-area: name;
+}
+
+.temp {
+    grid-area: temp;
+}
+
+.cond {
+    grid-area: cond;
+}
+
+.cond-pic {
+    grid-area: img;
+}
+
+.last-update {
+    grid-area: lu;
+}

@@ -13,8 +13,10 @@
 
 <body>
 
-    <input id="city-input" type="text" placeholder="Let us know where you are...">
-    <div id="search-button">Search</div>
+    <div id="search-container">
+        <input id="city-input" type="text" placeholder="Let us know where you are...">
+        <div id="search-button">Search</div>
+    </div>
 
     <div id="cities-container">
 
@@ -23,11 +25,12 @@
     <script id="city-template" type="text/x-handlebars-template">
         {{#each allCityData}}
             <div class="city">
-                <div class="city-name">{{name}}</div>
-                <div class="temp">{{temperature}}</div>
-                <div class="cond">{{condition}}</div>
-                <img class="cond-pic" src="{{conditionPic}}">
-                <div class="last-update">{{updatedAt}}</div>
+                <div class="add-button city-content"><i class="fas fa-plus-circle"></i></div>
+                <div class="city-name city-content">{{name}}</div>
+                <div class="temp city-content">{{temperature}}</div>
+                <div class="cond city-content">{{condition}}</div>
+                <img class="cond-pic city-content" src="{{conditionPic}}">
+                <div class="last-update city-content">{{updatedAt}}</div>
             </div>
         {{/each}}
         

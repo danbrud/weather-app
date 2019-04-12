@@ -15,6 +15,11 @@ const handleSearch = async cityInput => {
 
 $("#search-button").click( () => handleSearch( $("#city-input").val() ))
 
+$("#cities-container").on("click", ".add-button", function() {
+    let name = $(this).siblings(".city-name").text()
+    tempManager.saveCity(name)
+    renderer.renderData(tempManager.cityData)
+})
 
 
 loadPage()
