@@ -64,5 +64,28 @@ router.delete('/city/:cityName', function(req, res) {
     })
 })
 
+router.put('/city/:cityName', async function(req, res) {
+    let cityName = req.params.cityName
+    request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, async function(err, response) {
+        let weatherObj = JSON.parse(response.body)
+
+        let updatedAt = weatherObj.current.last_updated
+        let temperature = weatherObj.current.temp_c
+        let condition = weatherObj.current.condition.text
+        let conditionPic = weatherObj.current.condition.icon
+        
+       await City.findOneAndUpdate({name: cityName}, function(err, city) {
+            city.updatedAt = updatedAt
+            city.temperature = temperature
+            city.condition = condition
+            city.conditionPic = conditionPic
+
+            city.save()
+        })
+
+        res.send(City.findOne({name: cityName}))
+    })
+})
+
 
 module.exports = router

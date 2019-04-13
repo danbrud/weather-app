@@ -40,6 +40,20 @@ class TempManager {
             success: function (response) { }
         })
     }
+
+    updateCity(cityName) {
+        $.ajax({
+            url: `./city/${cityName}`,
+            method: "PUT",
+            success: function (newCity) { 
+                let city = this._cityData.find(c => c.name === cityName)
+                city.updatedAt = newCity.updatedAt
+                city.temperature = newCity.temperature
+                city.condition = newCity.condition
+                city.conditionPic = newCity.conditionPic   
+            }
+        })
+    }
 }
 
 let test = new TempManager()
