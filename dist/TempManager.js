@@ -17,18 +17,23 @@ class TempManager {
 
     async getCityData(cityName) {
         let city = await $.get(`./city/${cityName}`)
+        city.new = true
         this._cityData.push(city)
     }
 
     saveCity(cityName) {
-        for(let city of this.cityData) {
+        for(let city of this._cityData) {
             if(cityName === city.name) {
+                city.new = false
                 $.post(`./city`, city, function(response) { })
             }
         }
     }
 
     removeCity(cityName) {
+        let city = this._cityData.find(c => c.name === cityName)
+        city.new = true
+
         $.ajax({
             url: `./city/${cityName}`,
             method: "DELETE",

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Weather App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css">
@@ -25,12 +26,16 @@
     <script id="city-template" type="text/x-handlebars-template">
         {{#each allCityData}}
             <div class="city">
+                {{#if new}}
                 <div class="add-button city-content"><i class="fas fa-plus-circle"></i></div>
+                {{else}}
+                <div class="remove-button city-content"><i class="fas fa-minus-circle"></i></div>
+                {{/if}}
                 <div class="city-name city-content">{{name}}</div>
-                <div class="temp city-content">{{temperature}}</div>
+                <div class="temp city-content">{{temperature}}&#8451;</div>
                 <div class="cond city-content">{{condition}}</div>
                 <img class="cond-pic city-content" src="{{conditionPic}}">
-                <div class="last-update city-content">{{updatedAt}}</div>
+                <div class="last-update city-content"><i class="refresh-button fas fa-redo"></i>{{updatedAt}}</div>
             </div>
         {{/each}}
         

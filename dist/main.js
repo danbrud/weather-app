@@ -13,11 +13,28 @@ const handleSearch = async cityInput => {
 }
 
 
-$("#search-button").click( () => handleSearch( $("#city-input").val() ))
+$("#search-button").click( () => { 
+    handleSearch( $("#city-input").val())
+    $("#city-input").val("")
+})
+
+$(document).keypress( function (e) {
+    var key = e.which
+    if (key === 13) {
+        handleSearch( $("#city-input").val())
+        $("#city-input").val("") 
+    }
+})
 
 $("#cities-container").on("click", ".add-button", function() {
     let name = $(this).siblings(".city-name").text()
     tempManager.saveCity(name)
+    renderer.renderData(tempManager.cityData)
+})
+
+$("#cities-container").on("click", ".remove-button", function() {
+    let name = $(this).siblings(".city-name").text()
+    tempManager.removeCity(name)
     renderer.renderData(tempManager.cityData)
 })
 
