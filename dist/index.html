@@ -35,7 +35,7 @@
                 <div class="temp city-content">{{temperature}}&#8451;</div>
                 <div class="cond city-content">{{condition}}</div>
                 <img class="cond-pic city-content" src="{{conditionPic}}">
-                <div class="last-update city-content"><i class="refresh-button fas fa-redo"></i>{{updatedAt}}</div>
+                <div class="last-update city-content"><i class="refresh-button fas fa-redo"></i>Last Updated: {{updatedAt}}</div>
             </div>
         {{/each}}
         
@@ -44,6 +44,7 @@
 
     <script src="./jquery/dist/jquery.js"></script>
     <script src="./handlebars/dist/handlebars.js"></script>
+    <script src="./moment/moment.js"></script>
     <script src="TempManager.js"></script>
     <script src="Renderer.js"></script>
     <script src="main.js"></script>

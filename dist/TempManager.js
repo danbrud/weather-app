@@ -18,6 +18,7 @@ class TempManager {
     async getCityData(cityName) {
         let city = await $.get(`./city/${cityName}`)
         city.new = true
+        
         this._cityData.push(city)
     }
 
@@ -31,8 +32,8 @@ class TempManager {
     }
 
     removeCity(cityName) {
-        let city = this._cityData.find(c => c.name === cityName)
-        city.new = true
+        let cityIndex = this._cityData.findIndex(c => c.name === cityName)
+        this._cityData.splice(cityIndex, 1)
 
         $.ajax({
             url: `./city/${cityName}`,
@@ -45,12 +46,9 @@ class TempManager {
         $.ajax({
             url: `./city/${cityName}`,
             method: "PUT",
-            success: function (newCity) { 
-                let city = this._cityData.find(c => c.name === cityName)
-                city.updatedAt = newCity.updatedAt
-                city.temperature = newCity.temperature
-                city.condition = newCity.condition
-                city.conditionPic = newCity.conditionPic   
+            success: (newCity) => { 
+                let i = this._cityData.findIndex(c => c.name === cityName)
+                this._cityData.splice(i, 1, newCity)
             }
         })
     }

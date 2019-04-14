@@ -1,5 +1,6 @@
 const express = require('express')
 const request = require('request')
+const moment = require('moment')
 const City = require('../model/City')
 const router = express.Router()
 
@@ -19,9 +20,11 @@ router.get('/city/:cityName', function(req, res) {
     request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, function(err, response) {
         let weatherObj = JSON.parse(response.body)
 
+        let lastUpdate = moment(weatherObj.current.last_updated, "YYYY-MM-DD hh-mm").format("ddd, h:mm A")
+       
         let cityObj = {
             name: weatherObj.location.name,
-            updatedAt: weatherObj.current.last_updated,
+            updatedAt: lastUpdate,
             temperature: weatherObj.current.temp_c,
             condition: weatherObj.current.condition.text,
             conditionPic: weatherObj.current.condition.icon
@@ -41,7 +44,7 @@ router.get('/cities', function(req, res) {
 router.post('/city', function(req, res) {
     //TAKE DATA FROM BODY OF THE REQUEST AND SAVE AS A NEW CITY TO DATABASE
     let reqCity = req.body
-
+    
     let newCity = new City({
         name: reqCity.name,
         updatedAt: reqCity.updatedAt,
@@ -50,6 +53,7 @@ router.post('/city', function(req, res) {
         conditionPic: reqCity.conditionPic
     })
 
+    
     let save = newCity.save()
     save.then(function(city) {
         res.send(`Saved ${city.name} as new city.`)
@@ -64,26 +68,32 @@ router.delete('/city/:cityName', function(req, res) {
     })
 })
 
-router.put('/city/:cityName', async function(req, res) {
+router.put('/city/:cityName', function(req, res) {
     let cityName = req.params.cityName
-    request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, async function(err, response) {
+
+    
+    request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, function(err, response) {
         let weatherObj = JSON.parse(response.body)
 
-        let updatedAt = weatherObj.current.last_updated
+        let lastUpdate = moment(weatherObj.current.last_updated, "YYYY-MM-DD hh-mm").format("ddd, h:mm A")
         let temperature = weatherObj.current.temp_c
         let condition = weatherObj.current.condition.text
         let conditionPic = weatherObj.current.condition.icon
+
         
-       await City.findOneAndUpdate({name: cityName}, function(err, city) {
-            city.updatedAt = updatedAt
+        
+       City.findOneAndUpdate({name: cityName}).exec(function(err, city) {
+            
+            city.updatedAt = lastUpdate
             city.temperature = temperature
             city.condition = condition
             city.conditionPic = conditionPic
 
-            city.save()
+            let c = city.save()
+            c.then(function(response) {
+                res.send(response)
+            })
         })
-
-        res.send(City.findOne({name: cityName}))
     })
 })
 

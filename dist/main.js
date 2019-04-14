@@ -39,7 +39,7 @@ $("#cities-container").on("click", ".remove-button", function() {
 })
 
 $("#cities-container").on("click", ".refresh-button", async function() {
-    let name = $(this).siblings(".city-name").text()
+    let name = $(this).closest(".last-update").siblings(".city-name").text()
     await tempManager.updateCity(name)
     renderer.renderData(tempManager.cityData)
 })

@@ -7,6 +7,8 @@ body {
 #search-container {
     text-align: center;
     margin: 2%;
+    margin-top: 4%;
+    margin-bottom: 5%;
 }
 
 #city-input {
@@ -32,10 +34,12 @@ body {
     margin:5px;
     display: grid;
     grid-template-areas: 
-        ". temp img"
+        "btn temp img"
         "btn name cond"
         "lu lu lu";
     background-color: #026C7C;
+    color: white;
+    border-radius: 5px;
 }
 
 .city-content {
