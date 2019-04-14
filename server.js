@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const City = require('./server/model/City')
 
-mongoose.connect("mongodb://localhost/weatherDB", { useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/weatherDB", { useNewUrlParser: true })
 
 
 const app = express()
@@ -20,6 +20,6 @@ app.use('/', api)
 
 
 const port = 3100
-app.listen(port, function () {
+app.listen(process.env.PORT || port, function () {
     console.log('Server is up and running on port ' + port)
 })
