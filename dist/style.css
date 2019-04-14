@@ -52,12 +52,12 @@ body {
 
 .add-button {
     grid-area: btn;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .remove-button {
     grid-area: btn;
-    font-size: 24px;
+    font-size: 30px;
     color: rgb(184, 11, 11);
 }
 
@@ -87,4 +87,5 @@ body {
 
 .refresh-button {
     margin-right: 10px;
+    font-size: 20px;
 }
