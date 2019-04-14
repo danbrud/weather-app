@@ -70,9 +70,7 @@ router.delete('/city/:cityName', function(req, res) {
 
 router.put('/city/:cityName', async function(req, res) {
     let cityName = req.params.cityName
-    console.log(cityName)
 
-    
     request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, async function(err, response) {
         let weatherObj = JSON.parse(response.body)
         let lastUpdate = moment(weatherObj.current.last_updated, "YYYY-MM-DD hh-mm").format("ddd, h:mm A")
