@@ -48,6 +48,7 @@ class TempManager {
             method: "PUT",
             success: (newCity) => { 
                 let i = this._cityData.findIndex(c => c.name === cityName)
+                console.log(newCity)
                 this._cityData.splice(i, 1, newCity)
             }
         })

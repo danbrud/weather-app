@@ -68,32 +68,28 @@ router.delete('/city/:cityName', function(req, res) {
     })
 })
 
-router.put('/city/:cityName', function(req, res) {
+router.put('/city/:cityName', async function(req, res) {
     let cityName = req.params.cityName
+    console.log(cityName)
 
     
-    request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, function(err, response) {
+    request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, async function(err, response) {
         let weatherObj = JSON.parse(response.body)
-
         let lastUpdate = moment(weatherObj.current.last_updated, "YYYY-MM-DD hh-mm").format("ddd, h:mm A")
-        let temperature = weatherObj.current.temp_c
-        let condition = weatherObj.current.condition.text
-        let conditionPic = weatherObj.current.condition.icon
 
-        
-        
-       City.findOneAndUpdate({name: cityName}).exec(function(err, city) {
-            
-            city.updatedAt = lastUpdate
-            city.temperature = temperature
-            city.condition = condition
-            city.conditionPic = conditionPic
-
-            let c = city.save()
-            c.then(function(response) {
-                res.send(response)
-            })
+        let newCity = new City({
+            name: weatherObj.location.name,
+            updatedAt: lastUpdate,
+            temperature: weatherObj.current.temp_c,
+            condition: weatherObj.current.condition.text,
+            conditionPic: weatherObj.current.condition.icon
         })
+
+        await City.deleteOne({ name: cityName })     
+        await newCity.save()
+
+        res.send(newCity)
+
     })
 })
 

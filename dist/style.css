@@ -31,13 +31,13 @@ body {
 }
 
 .city {
-    margin:5px;
+    margin:8px;
     display: grid;
     grid-template-areas: 
         "btn temp img"
         "btn name cond"
         "lu lu lu";
-    background-color: #026C7C;
+    background-color: rgb(13, 139, 158);
     color: white;
     border-radius: 5px;
 }
@@ -56,7 +56,7 @@ body {
 .remove-button {
     grid-area: btn;
     font-size: 24px;
-    color: rgb(151, 3, 3);
+    color: rgb(184, 11, 11);
 }
 
 .city-name {
@@ -79,6 +79,7 @@ body {
 .last-update {
     grid-area: lu;
     margin-top: 8px;
+    margin-bottom: 4px;
     display: inline-block;
 }
 
