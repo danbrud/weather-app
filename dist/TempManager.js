@@ -20,6 +20,8 @@ class TempManager {
         if (city != 0) {
             city.new = true
             this._cityData.push(city)
+        } else {
+            return -1
         }
     }
 

@@ -24,7 +24,12 @@ const loadPage = async () => {
 
 
 const handleSearch = async cityInput => {
-    await tempManager.getCityData(cityInput)
+    let s = await tempManager.getCityData(cityInput)
+    if(s === -1) {
+        $("#error-container").append("<p class='err'>Please enter a valid city.</p>")
+    } else {
+        $("#error-container").empty()
+    }
     renderer.renderData(tempManager.cityData)
 }
 
