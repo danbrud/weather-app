@@ -21,7 +21,7 @@ router.get('/city/:cityName', function (req, res) {
         let weatherObj = JSON.parse(response.body)
 
         if (weatherObj.error) {
-            return res.end()
+            return res.send("0")
         } else {
             let lastUpdate = moment(weatherObj.current.last_updated, "YYYY-MM-DD hh-mm").format("ddd, h:mm A")
 

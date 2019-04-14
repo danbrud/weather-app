@@ -1,6 +1,6 @@
 
 class TempManager {
-    constructor(){
+    constructor() {
         this._cityData = []
     }
 
@@ -10,23 +10,24 @@ class TempManager {
 
     async getDataFromDB() {
         let cities = await $.get('./cities')
-        if(cities) {
+        if (cities) {
             this._cityData = cities
         }
     }
 
     async getCityData(cityName) {
         let city = await $.get(`./city/${cityName}`)
-        city.new = true
-        
-        this._cityData.push(city)
+        if (city != 0) {
+            city.new = true
+            this._cityData.push(city)
+        }
     }
 
     saveCity(cityName) {
-        for(let city of this._cityData) {
-            if(cityName === city.name) {
+        for (let city of this._cityData) {
+            if (cityName === city.name) {
                 city.new = false
-                $.post(`./city`, city, function(response) { })
+                $.post(`./city`, city, function (response) { })
             }
         }
     }
@@ -46,7 +47,7 @@ class TempManager {
         let response = await $.ajax({
             url: `./city/${cityName}`,
             method: "PUT",
-            success: (newCity) => { 
+            success: (newCity) => {
                 let i = this._cityData.findIndex(c => c.name === cityName)
                 this._cityData.splice(i, 1, newCity)
             }
