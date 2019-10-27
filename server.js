@@ -2,7 +2,6 @@ const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-const City = require('./server/model/City')
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/weatherDB", { useNewUrlParser: true })
 

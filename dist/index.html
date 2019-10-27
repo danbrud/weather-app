@@ -36,12 +36,12 @@
                 <div class="city-name city-content">{{name}}</div>
                 <div class="temp city-content">{{temperature}}&#8451;</div>
                 <div class="cond city-content">{{condition}}</div>
-                <img class="cond-pic city-content" src="{{conditionPic}}">
+                <img class="cond-pic city-content" src="http://openweathermap.org/img/wn/{{conditionPic}}@2x.png">
                 <div class="last-update city-content"><i class="refresh-button fas fa-redo"></i>Last Updated: {{updatedAt}}</div>
             </div>
         {{/each}}
-        
-        
+
+
     </script>
 
     <script src="./jquery/dist/jquery.js"></script>

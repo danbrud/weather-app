@@ -1,99 +1,83 @@
 const express = require('express')
-const request = require('request')
+const axios = require('axios')
 const moment = require('moment')
 const City = require('../model/City')
 const router = express.Router()
+const xml2js = require('xml2js')
 
-const API_KEY = 'a8e94a6bf523415098180947191104'
+const API_KEY = '69b93809d9719d2a8aa6df489b548136'
 
 
 router.get('/sanity', function (req, res) {
     res.send('OK!')
 })
 
+const createCity = (city) => {
+    return {
+        name: city.current.city[0].$.name,
+        updatedAt: moment(city.current.lastupdate[0].$.value, "YYYY-MM-DD hh-mm").format("ddd, h:mm A"),
+        temperature: city.current.temperature[0].$.value,
+        condition: city.current.weather[0].$.value,
+        conditionPic: city.current.weather[0].$.icon
+    }
+}
 
-router.get('/city/:cityName', function (req, res) {
+const requestCity = async cityName => {
+    try {
+        return await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${API_KEY}&units=metric&mode=xml`)
+    }
+    catch (error) {
+        return false
+    }
+}
 
-    //ROUTE THAT MAKES CALLS TO API
 
-    let cityName = req.params.cityName
-    request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, function (err, response) {
-        let weatherObj = JSON.parse(response.body)
+router.get('/city/:cityName', async function (req, res) {
+    const cityName = req.params.cityName
+    const response = await requestCity(cityName)
 
-        if (weatherObj.error) {
-            return res.send("0")
-        } else {
-            let lastUpdate = moment(weatherObj.current.last_updated, "YYYY-MM-DD hh-mm").format("ddd, h:mm A")
+    if (!response) { return res.send("0") }
 
-            let cityObj = {
-                name: weatherObj.location.name,
-                updatedAt: lastUpdate,
-                temperature: weatherObj.current.temp_c,
-                condition: weatherObj.current.condition.text,
-                conditionPic: weatherObj.current.condition.icon
-            }
 
-            res.send(cityObj)
-        }
-
-    })
+    let city = await xml2js.parseStringPromise(response.data)
+    city = createCity(city)
+    res.send(city)
 })
 
 router.get('/cities', function (req, res) {
-    //ROUTE THAT FINDS ALL CITY DATA SAVED IN DB AND SENDS IT TO CLIENT
     City.find({}, function (err, cities) {
         res.send(cities)
     })
 })
 
-router.post('/city', function (req, res) {
-    //TAKE DATA FROM BODY OF THE REQUEST AND SAVE AS A NEW CITY TO DATABASE
-    let reqCity = req.body
+router.post('/city', async function (req, res) {
+    const city = new City(req.body)
+    await city.save()
 
-    let newCity = new City({
-        name: reqCity.name,
-        updatedAt: reqCity.updatedAt,
-        temperature: reqCity.temperature,
-        condition: reqCity.condition,
-        conditionPic: reqCity.conditionPic
-    })
-
-
-    let save = newCity.save()
-    save.then(function (city) {
-        res.send(`Saved ${city.name} as new city.`)
-    })
+    res.send(`Saved ${city.name} as new city.`)
 })
 
 router.delete('/city/:cityName', function (req, res) {
-    //FIND CITY DATA IN DB AND REMOVE IT FROM DB
-    let cityName = req.params.cityName
+    const cityName = req.params.cityName
+
     City.deleteOne({ name: cityName }, function (err, response) {
         res.send(`Deleted ${cityName} from database`)
     })
 })
 
 router.put('/city/:cityName', async function (req, res) {
-    let cityName = req.params.cityName
+    const cityName = req.params.cityName
+    const response = await requestCity(cityName)
 
-    request(`https://api.apixu.com/v1/current.json?key=${API_KEY}&q=${cityName}`, async function (err, response) {
-        let weatherObj = JSON.parse(response.body)
-        let lastUpdate = moment(weatherObj.current.last_updated, "YYYY-MM-DD hh-mm").format("ddd, h:mm A")
+    if (!response) { return res.send("0") }
 
-        let newCity = new City({
-            name: weatherObj.location.name,
-            updatedAt: lastUpdate,
-            temperature: weatherObj.current.temp_c,
-            condition: weatherObj.current.condition.text,
-            conditionPic: weatherObj.current.condition.icon
-        })
+    let city = await xml2js.parseStringPromise(response.data)
+    city = new City(createCity(city))
 
-        await City.deleteOne({ name: cityName })
-        await newCity.save()
+    await City.deleteOne({ name: cityName })
+    await city.save()
 
-        res.send(newCity)
-
-    })
+    res.send(city)
 })
 
 
